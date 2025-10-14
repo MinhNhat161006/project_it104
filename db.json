@@ -1,0 +1,11 @@
+{
+    "user": [
+        {
+            "id": 1,
+            "displayName": "Admin",
+            "email": "admin@gmail.com",
+            "password": "123",
+            "isAdmin": false
+        }
+    ]
+}
