@@ -4,6 +4,8 @@ import { BrowserRouter } from 'react-router'
 import { Provider } from 'react-redux'
 import { myStore } from './stores/index.ts'
 
+
+
 createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
     <Provider store={myStore}>

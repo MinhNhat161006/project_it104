@@ -1,11 +1,46 @@
 {
-    "user": [
-        {
-            "id": 1,
-            "displayName": "Admin",
-            "email": "admin@gmail.com",
-            "password": "123",
-            "isAdmin": false
-        }
-    ]
+  "user": [
+    {
+      "id": "1",
+      "displayName": "Admin",
+      "email": "admin@gmail.com",
+      "password": "123",
+      "isAdmin": true
+    },
+    {
+      "id": "7a1e",
+      "displayName": "rn_nhat",
+      "email": "nhmnhat161006.nvtroi2124@gmail.com",
+      "password": "123",
+      "isAdmin": false
+    },
+    {
+      "id": "d391",
+      "displayName": "rn_nhat",
+      "email": "b@gmail.com",
+      "password": "12345678",
+      "isAdmin": false
+    },
+    {
+      "id": "95aa",
+      "displayName": "quynh",
+      "email": "nhatquynh@gmail.com",
+      "password": "quynh123",
+      "isAdmin": false
+    },
+    {
+      "id": "fcc2",
+      "displayName": "rn_nhat",
+      "email": "nhmnhat.nvtroi2124@gmail.com",
+      "password": "12345678",
+      "isAdmin": false
+    },
+    {
+      "id": "a797",
+      "displayName": "a",
+      "email": "a@gmail.com",
+      "password": "12345678",
+      "isAdmin": false
+    }
+  ]
 }
