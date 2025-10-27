@@ -1,11 +1,12 @@
 
 import React from 'react'
-import Banner from '../../components/Banner'
-import PopularClasses from '../../components/PopularClasses'
-import Footer from '../../components/Footer'
-import Header from '../../components/Header'
+
 import { useSelector } from 'react-redux'
 import type { Store } from '../../stores'
+import Header from '../../components/common/Header'
+import Banner from '../../components/common/Banner'
+import PopularClasses from '../../components/common/PopularClasses'
+import Footer from '../../components/common/Footer'
 
 
 export default function Home() {
@@ -28,7 +29,7 @@ export default function Home() {
                     }
   `}
             </style>
-            <p>Xin chao: {userStore.data?.displayName}</p>
+            {/* <p>Xin chao: {userStore.data?.displayName}</p> */}
 
             <Header />
             <Banner />

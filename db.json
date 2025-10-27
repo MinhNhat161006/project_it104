@@ -42,5 +42,63 @@
       "password": "12345678",
       "isAdmin": false
     }
+  ],
+  "bookings": [
+    {
+      "id": 501,
+      "userId": 2,
+      "courseId": 101,
+      "bookingDate": "2025-10-01",
+      "bookingTime": "09:00",
+      "status": "confirmed"
+    },
+    {
+      "id": 502,
+      "userId": 2,
+      "courseId": 102,
+      "bookingDate": "2025-10-05",
+      "bookingTime": "19:30",
+      "status": "pending"
+    },
+    {
+      "id": "7872",
+      "userId": "",
+      "courseId": "Yoga",
+      "bookingDate": "2025-10-10",
+      "bookingTime": "06:10",
+      "status": "pending"
+    },
+    {
+      "id": "12a1",
+      "userId": "",
+      "courseId": "Zumba",
+      "bookingDate": "2025-10-02",
+      "bookingTime": "02:03",
+      "status": "pending"
+    },
+    {
+      "id": "8178",
+      "userId": "7a1e",
+      "courseId": "Zumba",
+      "bookingDate": "2025-10-15",
+      "bookingTime": "12:09",
+      "status": "pending"
+    },
+    {
+      "id": "0aac",
+      "userId": "7a1e",
+      "courseId": "Gym",
+      "bookingDate": "2025-10-10",
+      "bookingTime": "05:05",
+      "status": "pending"
+    },
+    {
+      "id": "1331",
+      "userId": "7a1e",
+      "courseId": "Gym",
+      "bookingDate": "2025-10-08",
+      "bookingTime": "01:05",
+      "status": "pending"
+    }
   ]
 }

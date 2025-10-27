@@ -17,7 +17,7 @@ export default function Signin() {
         formState: { errors }
     } = useForm<FormData>()
 
-    //khi da co tai khoan khi bam vao trang dang nhap se chuyen ve trang home (tat di de de lam du an)
+    // khi da co tai khoan khi bam vao trang dang nhap se chuyen ve trang home (tat di de de lam du an)
     // const userStore = useSelector((store: Store) => store.user)
 
     // useEffect(() => {
@@ -26,11 +26,20 @@ export default function Signin() {
     //     }
     // }, [userStore.data])
 
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null')
+    if (currentUser) {
+        if (currentUser.role === 'admin') {
+            window.location.href = '/admin'
+        } else {
+            window.location.href = '/'
+        }
+    }
+
     const onSubmit = async (data: FormData) => {
         try {
             const result = await dispatch(signInUserThunk(data)).unwrap()
             alert('Chào mừng ' + result.displayName + ' đã đăng nhập thành công')
-            if (result.role === "admin") {
+            if (result.role === 'admin') {
                 window.location.href = '/admin'
             } else {
                 window.location.href = '/'
