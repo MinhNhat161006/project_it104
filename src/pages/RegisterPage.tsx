@@ -35,7 +35,7 @@ export default function RegisterPage() {
             ).unwrap()
 
             alert('Chúc mừng ' + result.fullName + ' đã đăng ký thành công')
-            window.location.href = '/'
+            window.location.href = '/sign-in'
         } catch (error) {
             const message = error instanceof Error ? error.message : 'Đăng ký thất bại';
             alert(message)

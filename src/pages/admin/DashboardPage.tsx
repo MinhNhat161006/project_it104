@@ -9,7 +9,6 @@ export default function DashboardPage() {
         } else if (currentUser.role !== 'admin') {
             window.location.href = '/'
         } else {
-            // Redirect to booking management page
             window.location.href = '/admin/bookings'
         }
     }, [])
