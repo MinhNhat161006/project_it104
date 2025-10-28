@@ -1,37 +1,39 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { Apis } from "../../apis";
+import { Apis } from "../apis";
 
 export interface User {
   id: string;
-  displayName: string;
+  fullName: string;
   email: string;
   role: string;
+  phone?: string;
 }
 
-export interface InitUserState {
+export interface AuthState {
   data: User | null;
   loading: boolean;
   error: string | null;
 }
 
-const initialState: InitUserState = {
+const initialState: AuthState = {
   data: null,
   loading: false,
   error: null,
 };
-const userSlice = createSlice({
-  name: "user",
+
+const authSlice = createSlice({
+  name: "auth",
   initialState,
   reducers: {},
   extraReducers: (bd) => {
-    bd.addCase(fetchUserDataThunk.pending, (state, action) => {
+    bd.addCase(fetchUserDataThunk.pending, (state) => {
       state.loading = true;
     });
     bd.addCase(fetchUserDataThunk.fulfilled, (state, action) => {
       state.loading = false;
       state.data = action.payload;
     });
-    bd.addCase(fetchUserDataThunk.rejected, (state, action) => {
+    bd.addCase(fetchUserDataThunk.rejected, (state) => {
       state.loading = false;
     });
     //dang ky
@@ -58,70 +60,87 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = action.payload as string;
     });
+    //dang xuat
+    bd.addCase(logoutUserThunk.fulfilled, (state) => {
+      state.data = null;
+      state.loading = false;
+      state.error = null;
+    });
   },
 });
 
 export const fetchUserDataThunk = createAsyncThunk(
-  "user/fetchUserData",
+  "auth/fetchUserData",
   async () => {
-    let result = await Apis.user.me(localStorage.getItem("token"));
+    const result = await Apis.auth.me(localStorage.getItem("token"));
     return result;
   }
 );
 
-export const userReducer = userSlice.reducer;
+export const authReducer = authSlice.reducer;
 
-export const userAction = {
-  ...userSlice.actions,
+export const authAction = {
+  ...authSlice.actions,
 };
 
 //dang ky
 export const signUpUserThunk = createAsyncThunk(
-  "user/signUpUser",
+  "auth/signUpUser",
   async (
-    payload: { displayName: string; email: string; password: string },
+    payload: {
+      fullName: string;
+      email: string;
+      password: string;
+      phone: string;
+    },
     { rejectWithValue }
   ) => {
     try {
-      const result = await Apis.user.signUp(payload);
+      const result = await Apis.auth.signUp(payload);
       return result;
-    } catch (error: any) {
-      return rejectWithValue(error.message || "Đăng ký thất bại");
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Đăng ký thất bại";
+      return rejectWithValue(message);
     }
   }
 );
 
-// Hiển thị loading khi đang gửi form
-
-// Lưu thông tin người dùng vào Redux để dùng ở các trang khác
-
-// Hiển thị lỗi từ server (ví dụ: email đã tồn tại)
-
-// Tự động đăng nhập và chuyển hướng
-
 //dang nhap
 export const signInUserThunk = createAsyncThunk(
-  "user/signInUser",
+  "auth/signInUser",
   async (payload: { email: string; password: string }, { rejectWithValue }) => {
     try {
-      const token = await Apis.user.signIn(payload);
+      const token = await Apis.auth.signIn(payload);
       localStorage.setItem("token", token);
 
-      const user = await Apis.user.me(token);
+      const user = await Apis.auth.me(token);
 
       const currentUser = {
         id: user.id,
-        displayName: user.displayName,
+        fullName: user.fullName,
         email: user.email,
-        role: user.isAdmin ? "admin" : "user",
+        role: user.role,
+        phone: user.phone,
       };
 
       localStorage.setItem("currentUser", JSON.stringify(currentUser));
       localStorage.setItem("role", currentUser.role);
 
       return currentUser;
-    } catch (error: any) {
-      return rejectWithValue(error.message || "Đăng nhập thất bại");
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Đăng nhập thất bại";
+      return rejectWithValue(message);
     }
   }
 );
+
+//dang xuat
+export const logoutUserThunk = createAsyncThunk("auth/logoutUser", async () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("currentUser");
+  localStorage.removeItem("role");
+
+  return null;
+});

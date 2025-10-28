@@ -1,16 +1,13 @@
-
-import React from 'react'
-
 import { useSelector } from 'react-redux'
-import type { Store } from '../../stores'
-import Header from '../../components/common/Header'
-import Banner from '../../components/common/Banner'
-import PopularClasses from '../../components/common/PopularClasses'
-import Footer from '../../components/common/Footer'
+import type { Store } from '../stores'
+import Header from '../components/common/Header'
+import Banner from '../components/common/Banner'
+import PopularClasses from '../components/common/PopularClasses'
+import Footer from '../components/common/Footer'
 
 
-export default function Home() {
-    const userStore = useSelector((store: Store) => store.user)
+export default function HomePage() {
+    const authStore = useSelector((store: Store) => store.auth)
     return (
         <>
             <style>
@@ -29,7 +26,6 @@ export default function Home() {
                     }
   `}
             </style>
-            {/* <p>Xin chao: {userStore.data?.displayName}</p> */}
 
             <Header />
             <Banner />
@@ -38,3 +34,4 @@ export default function Home() {
         </>
     )
 }
+

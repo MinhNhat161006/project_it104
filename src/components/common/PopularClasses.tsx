@@ -1,23 +1,16 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import type { Store } from '../../stores';
 
 const PopularClasses: React.FC = () => {
-    const classes = [
-        {
-            title: 'Gym',
-            img: 'https://ansupps.com/cdn/shop/articles/weights.jpg?v=1692780831',
-            desc: 'Tập luyện với các thiết bị hiện đại',
-        },
-        {
-            title: 'Yoga',
-            img: 'https://img.freepik.com/premium-vector/international-yoga-day-banner-design-vector-file_783553-340.jpg',
-            desc: 'Thư giãn và cân bằng tâm trí',
-        },
-        {
-            title: 'Zumba',
-            img: 'https://img.freepik.com/free-psd/zumba-lifestyle-banner-template_23-2149193901.jpg',
-            desc: 'Đốt cháy calories với những điệu nhảy sôi động',
-        },
-    ];
+    const { data: courses } = useSelector((store: Store) => store.course);
+
+    // Map courses to classes format (sorted alphabetically in store)
+    const classes = courses.map(course => ({
+        title: course.name,
+        img: course.imageUrl,
+        desc: course.description,
+    }));
 
     const containerStyle: React.CSSProperties = {
         maxWidth: '1200px',
@@ -102,6 +95,7 @@ const PopularClasses: React.FC = () => {
                                 <p style={descStyle}>{cls.desc}</p>
                                 <button
                                     style={buttonStyle}
+                                    onClick={() => window.location.href = '/booking'}
                                     onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#1d4ed8')}
                                     onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#2563eb')}
                                 >

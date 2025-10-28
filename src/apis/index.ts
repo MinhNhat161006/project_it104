@@ -1,7 +1,11 @@
-import { bookingApi } from "./core/booking.api";
-import { UserApi } from "./core/user.api";
+import { bookingApi } from "./bookingApi";
+import { authApi } from "./authApi";
+import { userApi } from "./userApi";
+import { courseApi } from "./courseApi";
 
 export const Apis = {
-  user: UserApi,
+  auth: authApi,
+  user: userApi,
   booking: bookingApi,
+  course: courseApi,
 };

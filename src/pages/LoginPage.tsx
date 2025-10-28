@@ -1,30 +1,20 @@
-import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { useDispatch, useSelector } from 'react-redux'
-import type { AppDispatch, Store } from '../../stores'
-import { signInUserThunk } from '../../stores/slices/user.slice'
+import { useDispatch } from 'react-redux'
+import type { AppDispatch } from '../stores'
+import { signInUserThunk } from '../slices/authSlice'
 
 type FormData = {
     email: string
     password: string
 }
 
-export default function Signin() {
+export default function LoginPage() {
     const dispatch = useDispatch<AppDispatch>()
     const {
         register,
         handleSubmit,
         formState: { errors }
     } = useForm<FormData>()
-
-    // khi da co tai khoan khi bam vao trang dang nhap se chuyen ve trang home (tat di de de lam du an)
-    // const userStore = useSelector((store: Store) => store.user)
-
-    // useEffect(() => {
-    //     if (userStore.data) {
-    //         window.location.href = '/'
-    //     }
-    // }, [userStore.data])
 
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null')
     if (currentUser) {
@@ -38,14 +28,15 @@ export default function Signin() {
     const onSubmit = async (data: FormData) => {
         try {
             const result = await dispatch(signInUserThunk(data)).unwrap()
-            alert('Chào mừng ' + result.displayName + ' đã đăng nhập thành công')
+            alert('Chào mừng ' + result.fullName + ' đã đăng nhập thành công')
             if (result.role === 'admin') {
                 window.location.href = '/admin'
             } else {
                 window.location.href = '/'
             }
-        } catch (error: any) {
-            alert(error || 'Đăng nhập thất bại')
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Đăng nhập thất bại';
+            alert(message)
         }
     }
 
@@ -146,3 +137,4 @@ const errorStyle = {
     fontSize: '13px',
     marginTop: '4px'
 }
+

@@ -1,20 +1,19 @@
-import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
-import { signUpUserThunk } from '../../stores/slices/user.slice'
-import type { AppDispatch } from '../../stores'
+import { signUpUserThunk } from '../slices/authSlice'
+import type { AppDispatch } from '../stores'
 
 
 type FormData = {
-    displayName: string
+    fullName: string
     email: string
     password: string
     confirmPassword: string
+    phone: string
 }
 
-export default function Signup() {
+export default function RegisterPage() {
     const dispatch = useDispatch<AppDispatch>()
-    // dispatch<AppDispatch>() giúp TypeScript hiểu rõ kiểu trả về của dispatch
     const {
         register,
         handleSubmit,
@@ -28,17 +27,18 @@ export default function Signup() {
         try {
             const result = await dispatch(
                 signUpUserThunk({
-                    displayName: data.displayName.trim(),
+                    fullName: data.fullName.trim(),
                     email: data.email.trim(),
-                    password: data.password
+                    password: data.password,
+                    phone: data.phone.trim()
                 })
             ).unwrap()
-            // dispatch(...).unwrap() giúp bạn lấy kết quả trả về từ fulfilled hoặc ném lỗi từ rejected.
 
-            alert('Chúc mừng ' + result.displayName + ' đã đăng ký thành công')
+            alert('Chúc mừng ' + result.fullName + ' đã đăng ký thành công')
             window.location.href = '/'
-        } catch (error: any) {
-            alert(error || 'Đăng ký thất bại')
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Đăng ký thất bại';
+            alert(message)
         }
     }
 
@@ -48,16 +48,16 @@ export default function Signup() {
                 <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Đăng ký tài khoản</h2>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div style={fieldStyle}>
-                        <label htmlFor="displayName" style={labelStyle}>Họ và tên</label>
+                        <label htmlFor="fullName" style={labelStyle}>Họ và tên</label>
                         <input
                             type="text"
-                            id="displayName"
+                            id="fullName"
                             style={inputStyle}
-                            {...register('displayName', {
+                            {...register('fullName', {
                                 required: 'Họ và tên không được để trống'
                             })}
                         />
-                        {errors.displayName && <div style={errorStyle}>{errors.displayName.message}</div>}
+                        {errors.fullName && <div style={errorStyle}>{errors.fullName.message}</div>}
                     </div>
                     <div style={fieldStyle}>
                         <label htmlFor="email" style={labelStyle}>Email</label>
@@ -74,6 +74,22 @@ export default function Signup() {
                             })}
                         />
                         {errors.email && <div style={errorStyle}>{errors.email.message}</div>}
+                    </div>
+                    <div style={fieldStyle}>
+                        <label htmlFor="phone" style={labelStyle}>Số điện thoại</label>
+                        <input
+                            type="text"
+                            id="phone"
+                            style={inputStyle}
+                            {...register('phone', {
+                                required: 'Số điện thoại không được để trống',
+                                pattern: {
+                                    value: /^[0-9]{10}$/,
+                                    message: 'Số điện thoại phải có 10 chữ số'
+                                }
+                            })}
+                        />
+                        {errors.phone && <div style={errorStyle}>{errors.phone.message}</div>}
                     </div>
                     <div style={fieldStyle}>
                         <label htmlFor="password" style={labelStyle}>Mật khẩu</label>
@@ -169,3 +185,4 @@ const errorStyle = {
     fontSize: '13px',
     marginTop: '4px'
 }
+

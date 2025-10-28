@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect, useState } from 'react'
 import {
     Table,
     Button,
@@ -8,21 +9,24 @@ import {
     DatePicker,
     TimePicker,
     Popconfirm,
-    message
 } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 
 import dayjs from 'dayjs'
-import type { AppDispatch, Store } from '../../stores'
-import { createBooking, deleteBooking, fetchBookingsByUser, updateBooking, type BookingPayload } from '../../stores/slices/booking.slice'
-import Header from '../../components/common/Header'
+import type { AppDispatch, Store } from '../stores'
+import { createBooking, deleteBooking, fetchBookingsByUser, updateBooking } from '../slices/bookingSlice'
+import Header from '../components/common/Header'
 import { toast } from 'react-toastify'
+
+
 
 const BookingPage = () => {
     const dispatch = useDispatch<AppDispatch>()
-    const { data, loading } = useSelector((store: Store) => store.booking)
-    const userId = useSelector((store: Store) => store.user.data?.id)
-    const currentUser = useSelector((store: Store) => store.user.data)
+
+    const { data, loading: bookingLoading } = useSelector((store: Store) => store.booking)
+    const { data: currentUser, loading: authLoading } = useSelector((store: Store) => store.auth)
+    const { data: courses } = useSelector((store: Store) => store.course)
+    const userId = useSelector((store: Store) => store.auth.data?.id)
 
 
     const [form] = Form.useForm()
@@ -30,8 +34,15 @@ const BookingPage = () => {
     const [editingBooking, setEditingBooking] = useState<any>(null)
 
     useEffect(() => {
+        if (!authLoading && !currentUser?.id) {
+            window.location.href = "/"
+        }
+    }, [authLoading, currentUser])
+
+
+    useEffect(() => {
         if (userId) dispatch(fetchBookingsByUser(userId))
-    }, [userId])
+    }, [userId, dispatch])
 
     const handleOpenModal = (record?: any) => {
         setEditingBooking(record || null)
@@ -46,6 +57,8 @@ const BookingPage = () => {
             form.resetFields()
         }
     }
+
+
 
     const handleSubmit = async () => {
         const values = await form.validateFields()
@@ -101,7 +114,7 @@ const BookingPage = () => {
         },
         {
             title: 'Họ tên',
-            render: () => currentUser?.displayName || '—'
+            render: () => currentUser?.fullName || '—'
         },
         {
             title: 'Email',
@@ -159,7 +172,7 @@ const BookingPage = () => {
                     columns={columns}
                     dataSource={data}
                     rowKey="id"
-                    loading={loading}
+                    loading={bookingLoading}
                     pagination={{ pageSize: 5 }}
                 />
 
@@ -176,9 +189,11 @@ const BookingPage = () => {
                             rules={[{ required: true, message: 'Vui lòng chọn lớp học' }]}
                         >
                             <Select placeholder="Chọn lớp học">
-                                <Select.Option value="Yoga">Yoga</Select.Option>
-                                <Select.Option value="Gym">Gym</Select.Option>
-                                <Select.Option value="Zumba">Zumba</Select.Option>
+                                {courses.map(course => (
+                                    <Select.Option key={course.id} value={course.type}>
+                                        {course.name}
+                                    </Select.Option>
+                                ))}
                             </Select>
                         </Form.Item>
                         <Form.Item
@@ -204,3 +219,4 @@ const BookingPage = () => {
 
 
 export default BookingPage
+

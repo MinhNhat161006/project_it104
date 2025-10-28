@@ -1,11 +1,14 @@
-import React from 'react'
+import { logoutUserThunk } from '../../slices/authSlice'
+import type { AppDispatch } from '../../stores'
+import { useDispatch } from 'react-redux'
 
 const Header = () => {
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null')
+    const dispatch = useDispatch<AppDispatch>()
 
     const handleLogout = () => {
-        localStorage.removeItem('currentUser')
-        window.location.href = '/sign-in'
+        dispatch(logoutUserThunk())
+        window.location.href = "/sign-in"
     }
 
     return (
@@ -31,9 +34,9 @@ const Header = () => {
                     <a href="/" style={{ color: 'white', textDecoration: 'none' }}>Trang chủ</a>
                     <a href="/booking" style={{ color: 'white', textDecoration: 'none' }}>Lịch tập</a>
 
-                    {/* {currentUser && currentUser.role === 'admin' && (
+                    {currentUser && currentUser.role === 'admin' && (
                         <a href="/admin" style={{ color: 'white', textDecoration: 'none' }}>Quản lý</a>
-                    )} */}
+                    )}
 
 
                     {currentUser && (
@@ -42,7 +45,7 @@ const Header = () => {
                             border: 'none',
                             color: 'orange',
                             cursor: 'pointer',
-                        }}>Xin chào, {currentUser.displayName}</p>
+                        }}>Xin chào, {currentUser.fullName}</p>
                     )}
 
                     {currentUser ? (
@@ -67,3 +70,4 @@ const Header = () => {
 }
 
 export default Header
+
