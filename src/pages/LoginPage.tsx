@@ -15,6 +15,10 @@ export default function LoginPage() {
         handleSubmit,
         formState: { errors }
     } = useForm<FormData>()
+    // useForm<FormData>()	Tạo form với kiểu dữ liệu FormData gồm email và password
+    // register	Dùng để gắn input vào form và theo dõi giá trị
+    // handleSubmit	Dùng để xử lý khi người dùng nhấn nút submit
+    // formState.errors	Chứa lỗi của từng ô input nếu người dùng nhập sai hoặc thiếu
 
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null')
     if (currentUser) {
@@ -28,6 +32,8 @@ export default function LoginPage() {
     const onSubmit = async (data: FormData) => {
         try {
             const result = await dispatch(signInUserThunk(data)).unwrap()
+            //gửi dữ liệu đăng nhập bằng dispatch(signInUserThunk(data)
+            //.unwrap() để lấy kết quả trả về hoặc lỗi
             alert('Chào mừng ' + result.fullName + ' đã đăng nhập thành công')
             if (result.role === 'admin') {
                 window.location.href = '/admin'
@@ -56,7 +62,7 @@ export default function LoginPage() {
                                 pattern: {
                                     value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                                     message: 'Email không đúng định dạng'
-                                }
+                                } //pattern:  kiểm tra định dạng
                             })}
                         />
                         {errors.email && <div style={errorStyle}>{errors.email.message}</div>}

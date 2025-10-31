@@ -1,5 +1,4 @@
-import { useSelector } from 'react-redux'
-import type { Store } from '../stores'
+
 import Header from '../components/common/Header'
 import Banner from '../components/common/Banner'
 import PopularClasses from '../components/common/PopularClasses'
@@ -7,7 +6,7 @@ import Footer from '../components/common/Footer'
 
 
 export default function HomePage() {
-    const authStore = useSelector((store: Store) => store.auth)
+
     return (
         <>
             <style>

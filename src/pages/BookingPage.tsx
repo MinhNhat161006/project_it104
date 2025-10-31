@@ -27,6 +27,7 @@ const BookingPage = () => {
     const { data: currentUser, loading: authLoading } = useSelector((store: Store) => store.auth)
     const { data: courses } = useSelector((store: Store) => store.course)
     const userId = useSelector((store: Store) => store.auth.data?.id)
+    //truy cập dữ liệu từ Redux store trong một component React - useSelector
 
 
     const [form] = Form.useForm()
@@ -52,9 +53,11 @@ const BookingPage = () => {
                 courseId: record.courseId,
                 bookingDate: dayjs(record.bookingDate),
                 bookingTime: dayjs(record.bookingTime, 'HH:mm')
+                //form.setFieldsValue({...}) - Dùng để gán giá trị cho các trường trong form.
             })
         } else {
             form.resetFields()
+            //form.resetFields() - Dùng để reset toàn bộ form về giá trị ban đầu (hoặc giá trị mặc định nếu có).
         }
     }
 
@@ -62,6 +65,7 @@ const BookingPage = () => {
 
     const handleSubmit = async () => {
         const values = await form.validateFields()
+        //kiểm tra xem đã điền đầy đủ thông tin chưa?
         const payload = {
             userId: userId ?? '',
             courseId: values.courseId,
@@ -123,6 +127,7 @@ const BookingPage = () => {
         {
             title: 'Thao tác',
             render: (_: any, record: any) => (
+                //_ là giá trị mặc định (không dùng ở đây), record là dữ liệu của dòng hiện tại
                 <>
                     <Button type="link" onClick={() => handleOpenModal(record)}>
                         Sửa

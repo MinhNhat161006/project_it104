@@ -89,15 +89,15 @@ const courseSlice = createSlice({
   name: "course",
   initialState,
   reducers: {},
-  extraReducers: (builder) => {
-    builder
+  extraReducers: (bd) => {
+    bd
       // Fetch all courses
       .addCase(fetchAllCourses.pending, (state) => {
         state.loading = true;
       })
       .addCase(fetchAllCourses.fulfilled, (state, action) => {
         state.loading = false;
-        // Sort courses alphabetically by name
+        // Sort courses alphabe theo ten
         state.data = action.payload.sort((a: Course, b: Course) =>
           a.name.localeCompare(b.name)
         );

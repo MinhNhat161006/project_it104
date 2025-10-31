@@ -50,11 +50,12 @@ export const fetchBookingsByUser = createAsyncThunk(
   }
 );
 
-//  GET all bookings with user info
+//  GET all bookings with user info : admin xem toàn bộ lịch đặt, lọc...
 export const fetchAllBookings = createAsyncThunk(
   "booking/fetchAll",
   async (_, { rejectWithValue }) => {
     try {
+      //xử lí 2 api cùng lúc xong sẽ trả về 2 list là booking và user cùng lúc và ghép lại
       const [bookings, users] = await Promise.all([
         Apis.booking.getAll(),
         Apis.booking.getAllUsers(),
@@ -192,7 +193,7 @@ const bookingSlice = createSlice({
         state.data.push(action.payload);
         state.allBookings.push(action.payload as BookingWithUser);
       })
-      // Update booking
+      // Update booking: .fulfilled → tìm booking theo `id` và cập nhật trong cả `data` và `allBookings`
       .addCase(updateBooking.fulfilled, (state, action) => {
         const index = state.data.findIndex((b) => b.id === action.payload.id);
         if (index !== -1) state.data[index] = action.payload;

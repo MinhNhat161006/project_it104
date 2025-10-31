@@ -55,6 +55,22 @@
       "password": "12345678",
       "phone": "0123456789",
       "role": "user"
+    },
+    {
+      "id": "5284",
+      "fullName": "Võ Nguyễn Quốc Đạt",
+      "email": "dat@gmail.com",
+      "password": "12345678",
+      "phone": "0987654321",
+      "role": "user"
+    },
+    {
+      "id": "7e48",
+      "fullName": "Nguyễn Tuấn Nhựt",
+      "email": "nhut@gmail.com",
+      "password": "12345678",
+      "phone": "0123456789",
+      "role": "user"
     }
   ],
   "bookings": [
@@ -70,8 +86,8 @@
       "id": "0aac",
       "userId": "7a1e",
       "courseId": "Gym",
-      "bookingDate": "2025-10-10",
-      "bookingTime": "05:05",
+      "bookingDate": "2025-10-08",
+      "bookingTime": "01:05",
       "status": "pending"
     },
     {
@@ -118,8 +134,8 @@
       "id": "4080",
       "userId": "7a1e",
       "courseId": "Camping",
-      "bookingDate": "2025-10-23",
-      "bookingTime": "05:05",
+      "bookingDate": "2025-10-17",
+      "bookingTime": "Thu, 30 Oct 2025 22:06:12 GMT",
       "status": "pending"
     },
     {
@@ -160,6 +176,14 @@
       "courseId": "Gym",
       "bookingDate": "2025-10-01",
       "bookingTime": "04:04",
+      "status": "pending"
+    },
+    {
+      "id": "4ee8",
+      "userId": "7a1e",
+      "courseId": "Gym",
+      "bookingDate": "2025-10-09",
+      "bookingTime": "05:05",
       "status": "pending"
     }
   ],

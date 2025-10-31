@@ -46,8 +46,8 @@ const Banner: React.FC = () => {
             <p style={paragraphStyle}>Transform Your Body, Transform Your Life</p>
             <button
                 style={buttonStyle}
-                onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#1d4ed8')}
-                onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#2563eb')}
+                onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#2563eb')}
+                onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#1d4ed8')}
             >
                 Bắt đầu ngay
             </button>

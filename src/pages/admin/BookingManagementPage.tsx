@@ -44,14 +44,22 @@ const { Option } = Select
 const BookingManagementPage = () => {
     const dispatch = useDispatch<AppDispatch>()
 
+    //Lấy dữ liệu từ Redux store:
+    // allBookings: danh sách tất cả các lịch đặt
+    // stats: thống kê lịch đặt theo khóa học
+    // loading: trạng thái đang tải dữ liệu
     const { allBookings, stats, loading } = useSelector((store: Store) => store.booking)
+    //Lấy danh sách các khóa học từ store.
     const { data: courses } = useSelector((store: Store) => store.course)
-    const [selectedKeys] = useState(['1'])
+
+    //Quản lý trạng thái giao diện:
+    //điều khiển tab đang chọn
+    const [selectedKeys] = useState(['1'])//'1' là key của tab.
     const [form] = Form.useForm()
     const [modalVisible, setModalVisible] = useState(false)
     const [editingBooking, setEditingBooking] = useState<BookingWithUser | null>(null)
 
-    // Filter states
+    // Filter states : lớp học (tất cả), email (không có thì không lọc), ngày (thư viện dayjs)
     const [selectedClass, setSelectedClass] = useState<string>('all')
     const [searchEmail, setSearchEmail] = useState<string>('')
     const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs | null>(null)
@@ -67,7 +75,7 @@ const BookingManagementPage = () => {
         dispatch(calculateStats())
     }, [dispatch, currentUser])
 
-    // Filter bookings based on criteria
+    // Filter bookings dựa trên tiêu chí...
     const filteredBookings = useMemo(() => {
         return allBookings.filter(booking => {
             const classMatch = selectedClass === 'all' || booking.courseId === selectedClass
