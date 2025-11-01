@@ -18,7 +18,7 @@ import {
     deleteUserThunk
 } from '../../slices/userSlice'
 import type { User } from '../../slices/userSlice'
-import { fetchAllBookings } from '../../slices/bookingSlice'
+import { fetchAllBookings, deleteBooking } from '../../slices/bookingSlice'
 import { toast } from 'react-toastify'
 
 const { Sider, Content } = Layout
@@ -46,7 +46,7 @@ const UserManagementPage = () => {
         dispatch(fetchAllBookings())
     }, [dispatch, currentUser])
 
-    // Calculate booking count per user
+    // Calculate booking cho mỗi user
     const userBookingCounts = useMemo(() => {
         const counts: { [key: string]: number } = {}
         allBookings.forEach(booking => {
@@ -63,7 +63,7 @@ const UserManagementPage = () => {
                 fullName: record.fullName,
                 email: record.email,
                 phone: record.phone,
-                password: '' // Don't show password
+                password: '' // ko show password
             })
         } else {
             form.resetFields()
@@ -81,7 +81,7 @@ const UserManagementPage = () => {
 
         try {
             if (editingUser) {
-                // If password is empty, don't update it
+                // Nếu mật khẩu trống, ko cập nhật
                 const updateData: Partial<User> = {
                     fullName: values.fullName,
                     email: values.email,
@@ -104,7 +104,8 @@ const UserManagementPage = () => {
     }
 
     const handleOpenDeleteModal = (record: User) => {
-        // Prevent deleting current admin
+
+        // Ngăn chặn việc xóa quản trị viên
         if (record.id === currentUser.id) {
             toast.error('Không thể xóa tài khoản hiện tại')
             return
@@ -116,8 +117,27 @@ const UserManagementPage = () => {
     const handleConfirmDelete = async () => {
         if (userToDelete) {
             try {
+                // Tìm tất cả lịch đặt của user này
+                const userBookings = allBookings.filter(
+                    booking => booking.userId === userToDelete.id
+                )
+
+                // Xóa tất cả lịch đặt của user
+                if (userBookings.length > 0) {
+                    await Promise.all(
+                        userBookings.map(booking =>
+                            dispatch(deleteBooking(booking.id))
+                        )
+                    )
+                }
+
+                // Sau đó mới xóa user
                 await dispatch(deleteUserThunk(userToDelete.id))
-                toast.success('Xóa người dùng thành công')
+                toast.success('Xóa người dùng và tất cả lịch đặt thành công')
+
+                // Refresh lại danh sách bookings
+                await dispatch(fetchAllBookings())
+
                 setDeleteModalVisible(false)
                 setUserToDelete(null)
             } catch {
@@ -262,7 +282,7 @@ const UserManagementPage = () => {
                 </Sider>
                 <Layout>
                     <Content style={{ background: '#f0f2f5', padding: 0, margin: 0 }}>
-                        {/* Header Section */}
+                        {/* Header */}
                         <div
                             style={{
                                 background: '#fff',
@@ -279,7 +299,7 @@ const UserManagementPage = () => {
                             </Button>
                         </div>
 
-                        {/* Table Section */}
+                        {/* Table */}
                         <div style={{ background: '#fff', padding: '24px', margin: '0 24px' }}>
                             <Table
                                 columns={columns}

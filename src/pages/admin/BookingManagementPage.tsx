@@ -85,6 +85,8 @@ const BookingManagementPage = () => {
             return classMatch && emailMatch && dateMatch
         })
     }, [allBookings, selectedClass, searchEmail, selectedDate])
+    //useMemo sẽ chỉ chạy lại hàm allBookings.filter() khi giá trị trong [allBookings, selectedClass, searchEmail, selectedDate] thay đổi.
+    // Nếu [allBookings, selectedClass, searchEmail, selectedDate] không đổi → React sẽ dùng lại giá trị cũ đã tính trước đó.
 
     const handleOpenModal = (record?: BookingWithUser) => {
         setEditingBooking(record || null)
@@ -105,18 +107,49 @@ const BookingManagementPage = () => {
     const handleSubmit = async () => {
         const values = await form.validateFields()
 
-        // Format time properly
+        //formattedTime
         let formattedTime = values.bookingTime
         if (typeof values.bookingTime === 'string') {
             formattedTime = values.bookingTime
+            //→ Nếu bookingTime đã là chuỗi (ví dụ "10:30") → giữ nguyên
         } else if (values.bookingTime && typeof values.bookingTime.format === 'function') {
             formattedTime = values.bookingTime.format('HH:mm')
+            //→ Nếu bookingTime là đối tượng dayjs → dùng .format('HH:mm') để chuyển thành chuỗi giờ
+        }
+
+        const bookingDateStr = values.bookingDate.format('YYYY-MM-DD')
+        //Chuyển ngày thành chuỗi để so sánh và gửi lên server
+
+        // Lấy userId - nếu đang sửa thì lấy từ editingBooking, nếu thêm mới thì lấy từ form
+        const userIdToCheck = editingBooking ? editingBooking.userId : values.userId
+
+        // Check trùng lịch - chỉ check khi cùng userId
+        const duplicateBooking = allBookings.find(booking => {
+            // Nếu đang sửa, loại trừ booking hiện tại
+            if (editingBooking && booking.id === editingBooking.id) {
+                return false
+            }
+            // Chỉ check trùng nếu cùng userId
+            if (booking.userId !== userIdToCheck) {
+                return false
+            }
+            // Check trùng courseId, bookingDate, bookingTime
+            return (
+                booking.courseId === values.courseId &&
+                booking.bookingDate === bookingDateStr &&
+                booking.bookingTime === formattedTime
+            )
+        })
+
+        if (duplicateBooking) {
+            toast.error('Lịch đặt này đã tồn tại cho người dùng này. Vui lòng chọn thời gian khác.')
+            return
         }
 
         const payload = {
-            userId: values.userId,
+            userId: userIdToCheck,
             courseId: values.courseId,
-            bookingDate: values.bookingDate.format('YYYY-MM-DD'),
+            bookingDate: bookingDateStr,
             bookingTime: formattedTime
         }
 
@@ -129,7 +162,7 @@ const BookingManagementPage = () => {
                 toast.success('Thêm lịch thành công')
             }
 
-            // Refresh data to get updated user info
+            //làm mới dữ liệu trong Redux store
             await dispatch(fetchAllBookings())
             await dispatch(calculateStats())
             setModalVisible(false)
@@ -152,7 +185,7 @@ const BookingManagementPage = () => {
         window.location.href = '/'
     }
 
-    // Dynamic chart data based on available courses
+    //Dữ liệu biểu đồ động dựa trên các khóa học có sẵn :3
     const chartData = courses.map(course => ({
         name: course.name,
         'Số lượng lịch đặt': stats[course.type.toLowerCase()] || 0
@@ -303,7 +336,7 @@ const BookingManagementPage = () => {
                 <Layout>
 
                     <Content style={{ background: '#f0f2f5', padding: 0, margin: 0 }}>
-                        {/* Statistics Section */}
+                        {/* Statistics */}
                         <div>
                             <h2 style={{ marginBottom: '16px', padding: '24px 24px 0' }}>Thống kê lịch tập</h2>
                             <Row gutter={16} style={{ padding: '0 24px 24px' }}>
@@ -320,7 +353,7 @@ const BookingManagementPage = () => {
                             </Row>
                         </div>
 
-                        {/* Chart Section */}
+                        {/* Chart */}
                         <div style={{
                             background: '#fff',
                             padding: '24px',
@@ -337,7 +370,7 @@ const BookingManagementPage = () => {
                             </BarChart>
                         </div>
 
-                        {/* Filters Section */}
+                        {/* Filters */}
                         <div style={{
                             background: '#fff',
                             padding: '24px',
@@ -381,7 +414,7 @@ const BookingManagementPage = () => {
                             </Row>
                         </div>
 
-                        {/* Table Section */}
+                        {/* Table */}
                         <div style={{ background: '#fff', padding: '24px', margin: '0 24px' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px' }}>
                                 <h3 style={{ margin: 0 }}>Danh sách lịch đặt</h3>

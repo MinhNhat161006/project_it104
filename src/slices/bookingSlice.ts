@@ -35,7 +35,7 @@ const initialState: BookingState = {
   error: null,
 };
 
-//  GET bookings by userId
+//  GET bookings bằng userId
 export const fetchBookingsByUser = createAsyncThunk(
   "booking/fetchByUser",
   async (userId: string, { rejectWithValue }) => {
@@ -50,7 +50,7 @@ export const fetchBookingsByUser = createAsyncThunk(
   }
 );
 
-//  GET all bookings with user info : admin xem toàn bộ lịch đặt, lọc...
+//  GET tất cả bookings với thông tin user : admin xem toàn bộ lịch đặt, lọc...
 export const fetchAllBookings = createAsyncThunk(
   "booking/fetchAll",
   async (_, { rejectWithValue }) => {
@@ -61,7 +61,7 @@ export const fetchAllBookings = createAsyncThunk(
         Apis.booking.getAllUsers(),
       ]);
 
-      // Map bookings with user info
+      // Map bookings với thông tin user
       const bookingsWithUser: BookingWithUser[] = bookings.map(
         (booking: Booking) => {
           const user = users.find(
@@ -85,7 +85,7 @@ export const fetchAllBookings = createAsyncThunk(
   }
 );
 
-// Calculate statistics
+// tính stats
 export const calculateStats = createAsyncThunk(
   "booking/calculateStats",
   async (_, { rejectWithValue }) => {
@@ -93,7 +93,7 @@ export const calculateStats = createAsyncThunk(
       const bookings = await Apis.booking.getAll();
       const stats: BookingStats = {};
 
-      // Dynamically count bookings for each course type
+      // Tự động đếm lượt đặt chỗ cho từng loại khóa học
       bookings.forEach((booking: Booking) => {
         const courseType = booking.courseId?.toLowerCase();
         if (courseType) {
@@ -164,7 +164,7 @@ const bookingSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // Fetch by user
+      // Fetch bằng user
       .addCase(fetchBookingsByUser.pending, (state) => {
         state.loading = true;
       })
@@ -172,7 +172,7 @@ const bookingSlice = createSlice({
         state.loading = false;
         state.data = action.payload;
       })
-      // Fetch all bookings
+      // Fetch tất cả bookings
       .addCase(fetchAllBookings.pending, (state) => {
         state.loading = true;
       })
@@ -180,7 +180,7 @@ const bookingSlice = createSlice({
         state.loading = false;
         state.allBookings = action.payload;
       })
-      // Calculate stats
+      // tính stats
       .addCase(calculateStats.pending, (state) => {
         state.loading = true;
       })
@@ -188,12 +188,12 @@ const bookingSlice = createSlice({
         state.loading = false;
         state.stats = action.payload;
       })
-      // Create booking
+      // tạo booking
       .addCase(createBooking.fulfilled, (state, action) => {
         state.data.push(action.payload);
         state.allBookings.push(action.payload as BookingWithUser);
       })
-      // Update booking: .fulfilled → tìm booking theo `id` và cập nhật trong cả `data` và `allBookings`
+      // cập nhật booking: .fulfilled → tìm booking theo `id` và cập nhật trong cả `data` và `allBookings`
       .addCase(updateBooking.fulfilled, (state, action) => {
         const index = state.data.findIndex((b) => b.id === action.payload.id);
         if (index !== -1) state.data[index] = action.payload;
@@ -207,7 +207,7 @@ const bookingSlice = createSlice({
             ...action.payload,
           };
       })
-      // Delete booking
+      // delete booking
       .addCase(deleteBooking.fulfilled, (state, action) => {
         state.data = state.data.filter((b) => b.id !== action.payload);
         state.allBookings = state.allBookings.filter(

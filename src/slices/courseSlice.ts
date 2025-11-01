@@ -97,7 +97,7 @@ const courseSlice = createSlice({
       })
       .addCase(fetchAllCourses.fulfilled, (state, action) => {
         state.loading = false;
-        // Sort courses alphabe theo ten
+        // Sort courses alphabe theo tên
         state.data = action.payload.sort((a: Course, b: Course) =>
           a.name.localeCompare(b.name)
         );
@@ -105,14 +105,14 @@ const courseSlice = createSlice({
       // Create course
       .addCase(createCourse.fulfilled, (state, action) => {
         state.data.push(action.payload);
-        // Re-sort after adding
+        // sắp xếp sau khi thêm
         state.data.sort((a, b) => a.name.localeCompare(b.name));
       })
       // Update course
       .addCase(updateCourse.fulfilled, (state, action) => {
         const index = state.data.findIndex((c) => c.id === action.payload.id);
         if (index !== -1) state.data[index] = action.payload;
-        // Re-sort after updating
+        // Sắp xếp sau khi cập nhật
         state.data.sort((a, b) => a.name.localeCompare(b.name));
       })
       // Delete course

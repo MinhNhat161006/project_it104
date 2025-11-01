@@ -1,23 +1,23 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:3000";
-
 export const bookingApi = {
   // GET /bookings?userId={id}
   getByUser: async (userId: string) => {
-    const res = await axios.get(`${BASE_URL}/bookings?userId=${userId}`);
+    const res = await axios.get(
+      `${import.meta.env.VITE_SV_HOST}/bookings?userId=${userId}`
+    );
     return res.data;
   },
 
   // GET all bookings
   getAll: async () => {
-    const res = await axios.get(`${BASE_URL}/bookings`);
+    const res = await axios.get(`${import.meta.env.VITE_SV_HOST}/bookings`);
     return res.data;
   },
 
   // GET all users
   getAllUsers: async () => {
-    const res = await axios.get(`${BASE_URL}/users`);
+    const res = await axios.get(`${import.meta.env.VITE_SV_HOST}/users`);
     return res.data;
   },
 
@@ -28,7 +28,7 @@ export const bookingApi = {
     bookingDate: string;
     bookingTime: string;
   }) => {
-    const res = await axios.post(`${BASE_URL}/bookings`, {
+    const res = await axios.post(`${import.meta.env.VITE_SV_HOST}/bookings`, {
       ...payload,
       status: "pending",
     });
@@ -46,12 +46,15 @@ export const bookingApi = {
       status: string;
     }>
   ) => {
-    const res = await axios.patch(`${BASE_URL}/bookings/${id}`, data);
+    const res = await axios.patch(
+      `${import.meta.env.VITE_SV_HOST}/bookings/${id}`,
+      data
+    );
     return res.data;
   },
 
   // DELETE /bookings/:id
   delete: async (id: string) => {
-    await axios.delete(`${BASE_URL}/bookings/${id}`);
+    await axios.delete(`${import.meta.env.VITE_SV_HOST}/bookings/${id}`);
   },
 };

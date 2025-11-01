@@ -29,6 +29,8 @@ const CourseManagementPage = () => {
     const { data: courses, loading } = useSelector((store: Store) => store.course)
     const { allBookings } = useSelector((store: Store) => store.booking)
     const [selectedKeys] = useState(['2'])
+
+    //form
     const [form] = Form.useForm()
     const [modalVisible, setModalVisible] = useState(false)
     const [editingCourse, setEditingCourse] = useState<Course | null>(null)
@@ -94,6 +96,7 @@ const CourseManagementPage = () => {
         setDeleteModalVisible(true)
     }
 
+    //*
     const handleConfirmDelete = async () => {
         if (courseToDelete) {
             try {
@@ -367,7 +370,7 @@ const CourseManagementPage = () => {
                                     ).length;
                                     return relatedBookingsCount > 0 ? (
                                         <p style={{ color: '#ff4d4f', marginTop: '8px' }}>
-                                            ⚠️ Cảnh báo: Có <strong>{relatedBookingsCount}</strong> lịch đặt liên quan sẽ bị xóa cùng!
+                                            Cảnh báo: Có <strong>{relatedBookingsCount}</strong> lịch đặt liên quan sẽ bị xóa cùng!
                                         </p>
                                     ) : null;
                                 })()}

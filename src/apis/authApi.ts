@@ -20,7 +20,7 @@ export const authApi = {
     );
     if (result.data.length > 0) {
       throw {
-        message: "email da ton tai",
+        message: "Email đã tồn tại",
       };
     }
     const newUserRes = await axios
@@ -33,7 +33,7 @@ export const authApi = {
       })
       .catch(() => {
         throw {
-          message: "loi dang ky",
+          message: "Lỗi đăng ký",
         };
       });
     return newUserRes;
@@ -47,12 +47,12 @@ export const authApi = {
 
     if (findUserByEmailRes.data.length <= 0) {
       throw {
-        message: "Khong tim thay nguoi dung",
+        message: "Không tìm thấy người dùng",
       };
     }
     if (data.password != findUserByEmailRes.data[0].password) {
       throw {
-        message: "Mat khau khong dung",
+        message: "Mật khẩu không đúng",
       };
     }
 
@@ -63,14 +63,14 @@ export const authApi = {
   me: async (token: string | null) => {
     if (!token) {
       throw {
-        message: "Token khong ton tai!",
+        message: "Token không tồn tại!",
       };
     }
 
     const tokenData = await decodeToken(token);
     if (!tokenData) {
       throw {
-        message: "Token khong chinh xac!",
+        message: "Token không chính xác!",
       };
     }
 
@@ -82,7 +82,7 @@ export const authApi = {
 
     if (!getUserByIdRes) {
       throw {
-        message: "loi lay du lieu",
+        message: "Lỗi lấy dữ liệu",
       };
     }
 
@@ -113,7 +113,7 @@ async function decodeToken(token: string) {
 
     return payload;
   } catch (error) {
-    console.error("Token khong hop le", error);
+    console.error("Token không hợp lệ", error);
     return null;
   }
 }

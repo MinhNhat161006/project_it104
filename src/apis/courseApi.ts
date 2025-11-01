@@ -1,11 +1,9 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:3000";
-
 export const courseApi = {
   // GET all courses
   getAll: async () => {
-    const res = await axios.get(`${BASE_URL}/courses`);
+    const res = await axios.get(`${import.meta.env.VITE_SV_HOST}/courses`);
     return res.data;
   },
 
@@ -17,7 +15,10 @@ export const courseApi = {
     price: number;
     imageUrl: string;
   }) => {
-    const res = await axios.post(`${BASE_URL}/courses`, payload);
+    const res = await axios.post(
+      `${import.meta.env.VITE_SV_HOST}/courses`,
+      payload
+    );
     return res.data;
   },
 
@@ -32,12 +33,15 @@ export const courseApi = {
       imageUrl: string;
     }>
   ) => {
-    const res = await axios.patch(`${BASE_URL}/courses/${id}`, data);
+    const res = await axios.patch(
+      `${import.meta.env.VITE_SV_HOST}/courses/${id}`,
+      data
+    );
     return res.data;
   },
 
   // DELETE course
   delete: async (id: string) => {
-    await axios.delete(`${BASE_URL}/courses/${id}`);
+    await axios.delete(`${import.meta.env.VITE_SV_HOST}/courses/${id}`);
   },
 };

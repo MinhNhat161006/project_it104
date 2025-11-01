@@ -17,36 +17,12 @@
       "phone": "0987654321"
     },
     {
-      "id": "d391",
-      "email": "b@gmail.com",
-      "password": "12345678",
-      "fullName": "Nguyễn Văn B",
-      "role": "user",
-      "phone": "0123456789"
-    },
-    {
       "id": "95aa",
       "email": "nhatquynh@gmail.com",
       "password": "quynh123",
       "fullName": "Nguyễn Quỳnh",
       "role": "user",
       "phone": "0112233445"
-    },
-    {
-      "id": "a797",
-      "email": "a@gmail.com",
-      "password": "12345678",
-      "fullName": "Lê Văn A",
-      "role": "user",
-      "phone": "0334455667"
-    },
-    {
-      "id": "78b2",
-      "fullName": "Lê Thanh CƯờng",
-      "email": "cule@gmail.com",
-      "phone": "0123456789",
-      "password": "12345678",
-      "role": "user"
     },
     {
       "id": "16b2",
@@ -71,27 +47,27 @@
       "password": "12345678",
       "phone": "0123456789",
       "role": "user"
+    },
+    {
+      "id": "6ad0",
+      "fullName": "a",
+      "email": "a@gmail.com",
+      "password": "12345678",
+      "phone": "0123456789",
+      "role": "user"
     }
   ],
   "bookings": [
     {
       "id": "8178",
       "userId": "7a1e",
-      "courseId": "Zumba",
+      "courseId": "Yoga",
       "bookingDate": "2025-10-15",
       "bookingTime": "12:09",
       "status": "pending"
     },
     {
       "id": "0aac",
-      "userId": "7a1e",
-      "courseId": "Gym",
-      "bookingDate": "2025-10-08",
-      "bookingTime": "01:05",
-      "status": "pending"
-    },
-    {
-      "id": "1331",
       "userId": "7a1e",
       "courseId": "Gym",
       "bookingDate": "2025-10-08",
@@ -115,14 +91,6 @@
       "status": "pending"
     },
     {
-      "id": "1966",
-      "userId": "d391",
-      "courseId": "Zumba",
-      "bookingDate": "2025-10-29",
-      "bookingTime": "05:05",
-      "status": "pending"
-    },
-    {
       "id": "5def",
       "userId": "7a1e",
       "courseId": "Yoga",
@@ -135,7 +103,7 @@
       "userId": "7a1e",
       "courseId": "Camping",
       "bookingDate": "2025-10-17",
-      "bookingTime": "Thu, 30 Oct 2025 22:06:12 GMT",
+      "bookingTime": "09:00",
       "status": "pending"
     },
     {
@@ -144,22 +112,6 @@
       "courseId": "Gym",
       "bookingDate": "2025-07-28",
       "bookingTime": "02:04",
-      "status": "pending"
-    },
-    {
-      "id": "0480",
-      "userId": "78b2",
-      "courseId": "Camping",
-      "bookingDate": "2025-10-09",
-      "bookingTime": "06:06",
-      "status": "pending"
-    },
-    {
-      "id": "180e",
-      "userId": "d391",
-      "courseId": "Gym",
-      "bookingDate": "2025-10-23",
-      "bookingTime": "05:05",
       "status": "pending"
     },
     {

@@ -21,54 +21,7 @@ const initialState: AuthState = {
   error: null,
 };
 
-const authSlice = createSlice({
-  name: "auth",
-  initialState,
-  reducers: {},
-  extraReducers: (bd) => {
-    bd.addCase(fetchUserDataThunk.pending, (state) => {
-      state.loading = true;
-    });
-    bd.addCase(fetchUserDataThunk.fulfilled, (state, action) => {
-      state.loading = false;
-      state.data = action.payload;
-    });
-    bd.addCase(fetchUserDataThunk.rejected, (state) => {
-      state.loading = false;
-    });
-    //dang ky
-    bd.addCase(signUpUserThunk.pending, (state) => {
-      state.loading = true;
-    });
-    bd.addCase(signUpUserThunk.fulfilled, (state, action) => {
-      state.loading = false;
-      state.data = action.payload;
-    });
-    bd.addCase(signUpUserThunk.rejected, (state) => {
-      state.loading = false;
-    });
-    //dang nhap
-    bd.addCase(signInUserThunk.pending, (state) => {
-      state.loading = true;
-      state.error = null;
-    });
-    bd.addCase(signInUserThunk.fulfilled, (state, action) => {
-      state.loading = false;
-      state.data = action.payload;
-    });
-    bd.addCase(signInUserThunk.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload as string;
-    });
-    //dang xuat
-    bd.addCase(logoutUserThunk.fulfilled, (state) => {
-      state.data = null;
-      state.loading = false;
-      state.error = null;
-    });
-  },
-});
-
+// GET dữ liệu user
 export const fetchUserDataThunk = createAsyncThunk(
   "auth/fetchUserData",
   async () => {
@@ -77,13 +30,7 @@ export const fetchUserDataThunk = createAsyncThunk(
   }
 );
 
-export const authReducer = authSlice.reducer;
-
-export const authAction = {
-  ...authSlice.actions,
-};
-
-//dang ky
+// POST đăng ký
 export const signUpUserThunk = createAsyncThunk(
   "auth/signUpUser",
   async (
@@ -106,7 +53,7 @@ export const signUpUserThunk = createAsyncThunk(
   }
 );
 
-//dang nhap
+// POST đăng nhập
 export const signInUserThunk = createAsyncThunk(
   "auth/signInUser",
   async (payload: { email: string; password: string }, { rejectWithValue }) => {
@@ -136,7 +83,7 @@ export const signInUserThunk = createAsyncThunk(
   }
 );
 
-//dang xuat
+// POST đăng xuất
 export const logoutUserThunk = createAsyncThunk("auth/logoutUser", async () => {
   localStorage.removeItem("token");
   localStorage.removeItem("currentUser");
@@ -144,3 +91,55 @@ export const logoutUserThunk = createAsyncThunk("auth/logoutUser", async () => {
 
   return null;
 });
+
+const authSlice = createSlice({
+  name: "auth",
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      // Fetch dữ liệu user
+      .addCase(fetchUserDataThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchUserDataThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload;
+      })
+      .addCase(fetchUserDataThunk.rejected, (state) => {
+        state.loading = false;
+      })
+      // Sign up
+      .addCase(signUpUserThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(signUpUserThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload;
+      })
+      .addCase(signUpUserThunk.rejected, (state) => {
+        state.loading = false;
+      })
+      // Sign in
+      .addCase(signInUserThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(signInUserThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload;
+      })
+      .addCase(signInUserThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      // Logout
+      .addCase(logoutUserThunk.fulfilled, (state) => {
+        state.data = null;
+        state.loading = false;
+        state.error = null;
+      });
+  },
+});
+
+export const authReducer = authSlice.reducer;
